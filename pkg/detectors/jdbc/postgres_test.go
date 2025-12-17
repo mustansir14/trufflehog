@@ -49,7 +49,7 @@ func TestParsePostgresMissingCredentials(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := logContext.AddLogger(context.Background())
-			j, err := ParsePostgres(ctx, tt.subname)
+			j, err := parsePostgres(ctx, tt.subname)
 
 			if tt.shouldBeNil {
 				if j != nil {
@@ -88,9 +88,8 @@ func TestParsePostgresUsernameRecognition(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := logContext.AddLogger(context.Background())
-			j, err := ParsePostgres(ctx, tt.subname)
+			j, err := parsePostgres(ctx, tt.subname)
 			if err != nil {
-				t.Fatalf("ParsePostgres() error = %v", err)
 				t.Fatalf("ParsePostgres() error = %v", err)
 			}
 

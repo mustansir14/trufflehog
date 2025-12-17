@@ -41,19 +41,9 @@ func buildMySQLConnectionString(host, database, user, password string, params ma
 	if password != "" {
 		userPass = userPass + ":" + password
 	}
-	userPass := user
-	if password != "" {
-		userPass = userPass + ":" + password
-	}
 	if userPass != "" {
 		conn = userPass + "@" + conn
 	}
-	if len(params) > 0 {
-		var paramList []string
-		for k, v := range params {
-			paramList = append(paramList, fmt.Sprintf("%s=%s", k, v))
-		}
-		conn = conn + "?" + strings.Join(paramList, "&")
 	if len(params) > 0 {
 		var paramList []string
 		for k, v := range params {

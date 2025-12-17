@@ -14,8 +14,6 @@ import (
 
 type PostgresJDBC struct {
 	ConnectionInfo
-type PostgresJDBC struct {
-	ConnectionInfo
 }
 
 var _ JDBC = (*PostgresJDBC)(nil)
@@ -30,18 +28,6 @@ func (s *PostgresJDBC) ping(ctx context.Context) pingResult {
 		buildPostgresConnectionString(s.Host, s.User, s.Password, "postgres", s.Params, true),
 		buildPostgresConnectionString(s.Host, s.User, s.Password, "postgres", s.Params, false),
 	)
-}
-
-func (s *PostgresJDBC) GetDBType() DatabaseType {
-	return PostgreSQL
-}
-
-func (s *PostgresJDBC) GetConnectionInfo() *ConnectionInfo {
-	return &s.ConnectionInfo
-}
-
-func (s *PostgresJDBC) BuildConnectionString() string {
-	return buildPostgresConnectionString(s.Host, s.User, s.Password, s.Database, s.Params, true)
 }
 
 func (s *PostgresJDBC) GetDBType() DatabaseType {
@@ -115,20 +101,10 @@ func parsePostgres(ctx logContext.Context, subname string) (JDBC, error) {
 		},
 	}
 
-	postgresJDBC := &PostgresJDBC{
-		ConnectionInfo: ConnectionInfo{
-			Host:     u.Host,
-			Database: dbName,
-			Params:   params,
-		},
-	}
-
 	if u.User != nil {
-		postgresJDBC.User = u.User.Username()
 		postgresJDBC.User = u.User.Username()
 		pass, set := u.User.Password()
 		if set {
-			postgresJDBC.Password = pass
 			postgresJDBC.Password = pass
 		}
 	}
@@ -139,21 +115,17 @@ func parsePostgres(ctx logContext.Context, subname string) (JDBC, error) {
 		case "disable", "allow", "prefer",
 			"require", "verify-ca", "verify-full":
 			postgresJDBC.Params["sslmode"] = v[0]
-			postgresJDBC.Params["sslmode"] = v[0]
 		}
 	}
 
 	if v := u.Query().Get("user"); v != "" {
 		postgresJDBC.User = v
-		postgresJDBC.User = v
 	}
 
 	if v := u.Query().Get("password"); v != "" {
 		postgresJDBC.Password = v
-		postgresJDBC.Password = v
 	}
 
-	if postgresJDBC.Host == "" || postgresJDBC.Password == "" {
 	if postgresJDBC.Host == "" || postgresJDBC.Password == "" {
 		ctx.Logger().WithName("jdbc").
 			V(2).
@@ -161,7 +133,6 @@ func parsePostgres(ctx logContext.Context, subname string) (JDBC, error) {
 		return nil, fmt.Errorf("missing host or password in connection string")
 	}
 
-	return postgresJDBC, nil
 	return postgresJDBC, nil
 }
 
@@ -178,27 +149,13 @@ func buildPostgresConnectionString(host string, user string, password string, db
 	if h, p, ok := strings.Cut(host, ":"); ok {
 		data["host"] = h
 		data["port"] = p
-		"user":     "postgres",
-		"password": password,
-		"host":     host,
-	}
-	if user != "" {
-		data["user"] = user
-	}
-	if h, p, ok := strings.Cut(host, ":"); ok {
-		data["host"] = h
-		data["port"] = p
 	}
 	for key, val := range params {
 		data[key] = val
 	}
 
 	if includeDbName {
-	if includeDbName {
 		data["dbname"] = "postgres"
-		if dbName != "" {
-			data["dbname"] = dbName
-		}
 		if dbName != "" {
 			data["dbname"] = dbName
 		}
