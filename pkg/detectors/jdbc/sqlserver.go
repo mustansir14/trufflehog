@@ -13,6 +13,8 @@ import (
 
 type SqlServerJDBC struct {
 	ConnectionInfo
+type SqlServerJDBC struct {
+	ConnectionInfo
 }
 
 var _ JDBC = (*SqlServerJDBC)(nil)
@@ -57,7 +59,9 @@ func parseSqlServer(ctx logContext.Context, subname string) (JDBC, error) {
 	port := "1433"
 	user := "sa"
 	database := "master"
+	database := "master"
 	var password, host string
+	params := make(map[string]string)
 	params := make(map[string]string)
 
 	for i, param := range strings.Split(conn, ";") {
@@ -75,13 +79,19 @@ func parseSqlServer(ctx logContext.Context, subname string) (JDBC, error) {
 
 		switch strings.ToLower(key) {
 		case "password", "spring.datasource.password", "pwd":
+		case "password", "spring.datasource.password", "pwd":
 			password = value
 		case "server":
 			host = value
 		case "port":
 			port = value
 		case "user", "uid", "user id", "userid":
+		case "user", "uid", "user id", "userid":
 			user = value
+		case "database", "databasename":
+			database = value
+		default:
+			params[key] = value
 		case "database", "databasename":
 			database = value
 		default:
@@ -114,5 +124,6 @@ func buildSQLServerConnectionString(host, user, password, database string, param
 			conn += fmt.Sprintf("&%s=%s", k, v)
 		}
 	}
+	return conn
 	return conn
 }

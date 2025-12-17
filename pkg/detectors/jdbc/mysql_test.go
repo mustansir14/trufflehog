@@ -60,7 +60,7 @@ func TestParseMySQLMissingCredentials(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := logContext.AddLogger(context.Background())
-			j, err := parseMySQL(ctx, tt.subname)
+			j, err := ParseMySQL(ctx, tt.subname)
 
 			if tt.shouldBeNil {
 				if j != nil {
@@ -104,7 +104,7 @@ func TestParseMySQLUsernameRecognition(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := logContext.AddLogger(context.Background())
-			j, err := parseMySQL(ctx, tt.subname)
+			j, err := ParseMySQL(ctx, tt.subname)
 			if err != nil {
 				t.Fatalf("parseMySQL() error = %v", err)
 			}

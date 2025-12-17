@@ -56,7 +56,7 @@ func TestParseSqlServerMissingCredentials(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := logContext.AddLogger(context.Background())
 
-			j, err := parseSqlServer(ctx, tt.subname)
+			j, err := ParseSqlServer(ctx, tt.subname)
 
 			if tt.shouldBeNil {
 				if j != nil {
@@ -103,7 +103,7 @@ func TestParseSqlServerUserIgnoredBug2(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			ctx := logContext.AddLogger(context.Background())
 
-			j, err := parseSqlServer(ctx, tt.subname)
+			j, err := ParseSqlServer(ctx, tt.subname)
 			if err != nil {
 				t.Fatalf("parseSqlServer() error = %v", err)
 			}
